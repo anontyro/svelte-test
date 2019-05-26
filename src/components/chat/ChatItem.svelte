@@ -27,6 +27,6 @@
 
 <div class="chat-message {data.index % 2 === 0 ? 'even' : ''}">
   <p class="date">[{data.dateStamp}]</p>
-  <p class="message">{data.msg} {data.index}</p>
+  <p class="message">{data.msg}</p>
   <p class="user">{data.user}</p>
 </div>
