@@ -1,16 +1,31 @@
 <script>
+  import { chatStore } from "../../store/chatStore.js";
   const defaultText = "Enter text to start talking";
-  let userData = defaultText;
+  let currentMsg = defaultText;
 
   const onInputSelect = event => {
     if (event.target.value === defaultText) {
-      userData = "";
+      currentMsg = "";
     }
   };
 
   const onInputBlur = event => {
     if (event.target.value === "") {
-      userData = defaultText;
+      currentMsg = defaultText;
+    }
+  };
+
+  const onSubmit = event => {
+    if (currentMsg !== defaultText || currentMsg !== "") {
+      console.log(`Submitted text: ${currentMsg}`);
+      chatStore.update(val => [...val, currentMsg]);
+      currentMsg = "";
+    }
+  };
+
+  const handleKeydown = event => {
+    if (event.key.toLowerCase() === "enter") {
+      onSubmit(event);
     }
   };
 </script>
@@ -27,10 +42,11 @@
 
 <div class="user-input">
   <textarea
-    bind:value={userData}
+    bind:value={currentMsg}
     on:click={onInputSelect}
     on:blur={onInputBlur}
     rows="3"
     cols="50" />
-  <button>Submit</button>
+  <button on:click={onSubmit}>Submit</button>
 </div>
+<svelte:window on:keydown={handleKeydown} />
