@@ -8,10 +8,13 @@
 </script>
 
 <style>
-
+  .chat-window {
+    height: 80vh;
+    overflow-y: auto;
+  }
 </style>
 
-<div>
+<div class="chat-window">
   <h3>Chat Window</h3>
   {#each chatData as item}
     <ChatItem data={item} />

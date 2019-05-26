@@ -15,10 +15,32 @@
     }
   };
 
+  const getDateStamp = () => {
+    const date = new Date();
+    const time = `${date.getHours()}:${date.getMinutes()}`;
+    const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
+    const month = date.getMonth() > 9 ? date.getMonth() : `0${date.getMonth()}`;
+    const dateNow = `${day}/${month}:${time}`;
+    return dateNow;
+  };
+
+  const addNewMessage = (val, store) => {
+    const msg = {
+      dateStamp: getDateStamp(),
+      msg: val,
+      user: "me"
+    };
+    store.update(val => {
+      msg.index = val.length;
+      const output = [msg, ...val];
+      return output;
+    });
+  };
+
   const onSubmit = event => {
     if (currentMsg !== defaultText || currentMsg !== "") {
       console.log(`Submitted text: ${currentMsg}`);
-      chatStore.update(val => [...val, currentMsg]);
+      addNewMessage(currentMsg, chatStore);
       currentMsg = "";
     }
   };
