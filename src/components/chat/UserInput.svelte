@@ -32,6 +32,7 @@
     };
     store.update(val => {
       msg.index = val.length;
+      socket.emit("chat message", msg);
       const output = [msg, ...val];
       return output;
     });

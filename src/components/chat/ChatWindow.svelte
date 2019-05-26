@@ -1,9 +1,19 @@
 <script>
+  import { onMount } from "svelte";
   import { chatStore } from "../../store/chatStore.js";
   import ChatItem from "./ChatItem";
   let chatData = [];
   const chatSub = chatStore.subscribe(val => {
     chatData = val;
+  });
+
+  socket.on("chat message", msg => {
+    console.log(`New client message: ${msg.msg}`);
+    chatStore.update(val => {
+      msg.user = "other";
+      const output = [msg, ...val];
+      return output;
+    });
   });
 </script>
 
