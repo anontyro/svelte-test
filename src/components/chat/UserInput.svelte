@@ -1,7 +1,12 @@
 <script>
-  import { chatStore } from "../../store/chatStore.js";
+  import { chatStore, userStore } from "../../store/chatStore.js";
   const defaultText = "Enter text to start talking";
   let currentMsg = defaultText;
+  let userName = "user";
+
+  const userSub = userStore.subscribe(val => {
+    userName = val.userName;
+  });
 
   const onInputSelect = event => {
     if (event.target.value === defaultText) {
@@ -24,11 +29,11 @@
     return dateNow;
   };
 
-  const addNewMessage = (val, store) => {
+  const addNewMessage = (val, store, userName) => {
     const msg = {
       dateStamp: getDateStamp(),
       msg: val,
-      user: "me"
+      user: userName
     };
     store.update(val => {
       msg.index = val.length;
@@ -41,7 +46,7 @@
   const onSubmit = event => {
     if (currentMsg !== defaultText || currentMsg !== "") {
       console.log(`Submitted text: ${currentMsg}`);
-      addNewMessage(currentMsg, chatStore);
+      addNewMessage(currentMsg, chatStore, userName);
       currentMsg = "";
     }
   };
