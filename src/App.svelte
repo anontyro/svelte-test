@@ -1,6 +1,6 @@
 <script>
-  import UserInput from "./components/chat/UserInput.svelte";
-  import ChatWindow from "./components/chat/ChatWindow.svelte";
+  import Chat from "./routes/Chat.svelte";
+  import Page from "page";
   export let name;
   let message = null;
 </script>
@@ -9,5 +9,4 @@
 
 </style>
 
-<ChatWindow />
-<UserInput />
+<Chat />

@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "page": "^1.11.4",
     "socket.io": "^2.2.0"
   }
 }
