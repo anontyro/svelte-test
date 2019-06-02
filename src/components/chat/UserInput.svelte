@@ -1,24 +1,22 @@
 <script>
-  import { chatStore, userStore } from "../../store/chatStore.js";
+  import {
+    chatStore,
+    userStore,
+    appProperties
+  } from "../../store/chatStore.js";
+  import { ACTIVE_COMPONENT } from "../../store/storeEnums";
+
   const defaultText = "Enter text to start talking";
-  let currentMsg = defaultText;
+  let currentMsg = "";
   let userName = "user";
+  let activeComponent = "";
 
   const userSub = userStore.subscribe(val => {
     userName = val.userName;
   });
-
-  const onInputSelect = event => {
-    if (event.target.value === defaultText) {
-      currentMsg = "";
-    }
-  };
-
-  const onInputBlur = event => {
-    if (event.target.value === "") {
-      currentMsg = defaultText;
-    }
-  };
+  const appPropertySub = appProperties.subscribe(val => {
+    activeComponent = val.current;
+  });
 
   const getDateStamp = () => {
     const date = new Date();
@@ -44,7 +42,8 @@
   };
 
   const onSubmit = event => {
-    if (currentMsg !== defaultText || currentMsg !== "") {
+    currentMsg = currentMsg.trim();
+    if (currentMsg.length > 1) {
       console.log(`Submitted text: ${currentMsg}`);
       addNewMessage(currentMsg, chatStore, userName);
       currentMsg = "";
@@ -52,7 +51,10 @@
   };
 
   const handleKeydown = event => {
-    if (event.key.toLowerCase() === "enter") {
+    if (
+      event.key.toLowerCase() === "enter" &&
+      activeComponent === ACTIVE_COMPONENT.CHAT_WINDOW
+    ) {
       onSubmit(event);
     }
   };
@@ -62,6 +64,7 @@
   .user-input {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
   }
   textarea {
     flex-grow: 1;
@@ -69,12 +72,7 @@
 </style>
 
 <div class="user-input">
-  <textarea
-    bind:value={currentMsg}
-    on:click={onInputSelect}
-    on:blur={onInputBlur}
-    rows="3"
-    cols="50" />
+  <textarea bind:value={currentMsg} placeholder={defaultText} rows="3" />
   <button on:click={onSubmit}>Submit</button>
 </div>
 <svelte:window on:keydown={handleKeydown} />

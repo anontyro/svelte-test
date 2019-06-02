@@ -8,7 +8,6 @@
   });
 
   socket.on("chat message", msg => {
-    console.log(`New client message: ${msg.msg}`);
     chatStore.update(val => {
       const output = [msg, ...val];
       return output;
@@ -17,14 +16,23 @@
 </script>
 
 <style>
+  .chat-header {
+    text-align: center;
+    width: 100%;
+  }
   .chat-window {
-    height: 80vh;
+    height: 77vh;
     overflow-y: auto;
+    border: 5px solid #8b8cd4;
+    border-bottom: unset;
+    border-radius: 5px 5px 0 0;
   }
 </style>
 
+<div class="chat-header">
+  <h3>Svelte Chat</h3>
+</div>
 <div class="chat-window">
-  <h3>Chat Window</h3>
   {#each chatData as item}
     <ChatItem data={item} />
   {/each}

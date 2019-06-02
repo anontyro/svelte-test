@@ -8,6 +8,7 @@
     flex-direction: row;
     justify-content: space-between;
     margin: 0.5rem 1rem;
+    padding: 0 0.5rem;
   }
   .date {
     color: green;

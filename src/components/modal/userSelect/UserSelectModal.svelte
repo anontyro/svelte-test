@@ -1,5 +1,6 @@
 <script>
-  import { userStore } from "../../../store/chatStore.js";
+  import { userStore, appProperties } from "../../../store/chatStore.js";
+  import { ACTIVE_COMPONENT } from "../../../store/storeEnums.js";
 
   let userName = "";
   let showModal = true;
@@ -9,6 +10,9 @@
   const onSubmit = event => {
     userStore.update(val => {
       return { ...val, userName };
+    });
+    appProperties.update(val => {
+      return { ...val, current: ACTIVE_COMPONENT.CHAT_WINDOW };
     });
     showModal = false;
   };
