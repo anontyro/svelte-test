@@ -1,15 +1,17 @@
 <script>
   import { onMount } from "svelte";
-  import { chatStore } from "../../store/chatStore.js";
+  import { Store } from "../../store/chatStore.js";
   import ChatItem from "./ChatItem";
   let chatData = [];
-  const chatSub = chatStore.subscribe(val => {
-    chatData = val;
+  const chatSub = Store.subscribe(store => {
+    chatData = store.chat;
   });
 
   socket.on("chat message", msg => {
-    chatStore.update(val => {
-      const output = [msg, ...val];
+    console.log(msg);
+    Store.update(store => {
+      const chatData = store.chat;
+      const output = { ...store, chat: [msg, ...chatData] };
       return output;
     });
   });

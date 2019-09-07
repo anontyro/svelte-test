@@ -1,21 +1,25 @@
 <script>
-  import { userStore, appProperties } from "../../../store/chatStore.js";
+  import { Store } from "../../../store/chatStore.js";
   import { ACTIVE_COMPONENT } from "../../../store/storeEnums.js";
 
   let userName = "";
   const userId = Date.now();
   let showModal = true;
-  const userNameSub = userStore.subscribe(val => {
-    userName = val.userName;
+  const storeSubscription = Store.subscribe(store => {
+    userName = store.user.userName;
   });
+
   const onSubmit = event => {
     socket.emit("user-joins", { userName, userId });
-    userStore.update(val => {
-      return { ...val, userName, userId };
+    Store.update(store => {
+      const user = { userName, userId };
+      const properties = {
+        ...store.properties,
+        current: ACTIVE_COMPONENT.CHAT_WINDOW
+      };
+      return { ...store, user, properties };
     });
-    appProperties.update(val => {
-      return { ...val, current: ACTIVE_COMPONENT.CHAT_WINDOW };
-    });
+
     showModal = false;
   };
 </script>

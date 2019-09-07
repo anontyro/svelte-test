@@ -1,9 +1,5 @@
 <script>
-  import {
-    chatStore,
-    userStore,
-    appProperties
-  } from "../../store/chatStore.js";
+  import { Store } from "../../store/chatStore.js";
   import { ACTIVE_COMPONENT } from "../../store/storeEnums";
 
   const defaultText = "Enter text to start talking";
@@ -11,11 +7,9 @@
   let userName = "user";
   let activeComponent = "";
 
-  const userSub = userStore.subscribe(val => {
-    userName = val.userName;
-  });
-  const appPropertySub = appProperties.subscribe(val => {
-    activeComponent = val.current;
+  const storeSubscription = Store.subscribe(store => {
+    userName = store.user.userName;
+    activeComponent = store.properties.current;
   });
 
   const getDateStamp = () => {
@@ -27,16 +21,18 @@
     return dateNow;
   };
 
-  const addNewMessage = (val, store, userName) => {
+  const addNewMessage = (val, Store, userName) => {
     const msg = {
       dateStamp: getDateStamp(),
       msg: val,
       user: userName
     };
-    store.update(val => {
-      msg.index = val.length;
+    Store.update(store => {
+      console.log(store.chat.length);
+      const chatData = store.chat;
+      msg.index = chatData.length;
       socket.emit("chat message", msg);
-      const output = [msg, ...val];
+      const output = { ...store, chat: [msg, ...chatData] };
       return output;
     });
   };
@@ -45,7 +41,7 @@
     currentMsg = currentMsg.trim();
     if (currentMsg.length > 1) {
       console.log(`Submitted text: ${currentMsg}`);
-      addNewMessage(currentMsg, chatStore, userName);
+      addNewMessage(currentMsg, Store, userName);
       currentMsg = "";
     }
   };
