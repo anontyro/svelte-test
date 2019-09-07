@@ -3,13 +3,15 @@
   import { ACTIVE_COMPONENT } from "../../../store/storeEnums.js";
 
   let userName = "";
+  const userId = Date.now();
   let showModal = true;
   const userNameSub = userStore.subscribe(val => {
     userName = val.userName;
   });
   const onSubmit = event => {
+    socket.emit("user-joins", { userName, userId });
     userStore.update(val => {
-      return { ...val, userName };
+      return { ...val, userName, userId };
     });
     appProperties.update(val => {
       return { ...val, current: ACTIVE_COMPONENT.CHAT_WINDOW };
