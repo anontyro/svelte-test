@@ -1,4 +1,5 @@
 <script>
+  import { Router, Route } from "svero";
   import Chat from "./routes/Chat.svelte";
   import Page from "page";
   export let name;
@@ -9,4 +10,11 @@
 
 </style>
 
-<Chat />
+<Router>
+  <Route exact path="">
+    <Chat />
+  </Route>
+  <Route path="/static-path">
+    <h1>It works!</h1>
+  </Route>
+</Router>
