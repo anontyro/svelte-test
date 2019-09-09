@@ -1,13 +1,14 @@
 <script>
   import { Store } from "../../store/chatStore.js";
+  import { onDestroy } from "svelte";
   import { ACTIVE_COMPONENT } from "../../store/storeEnums";
 
   const defaultText = "Enter text to start talking";
   let currentMsg = "";
-  let userName = "user";
+  let userName = "";
   let activeComponent = "";
 
-  const storeSubscription = Store.subscribe(store => {
+  const unsubscribe = Store.subscribe(store => {
     userName = store.user.userName;
     activeComponent = store.properties.current;
   });
@@ -54,6 +55,8 @@
       onSubmit(event);
     }
   };
+
+  onDestroy(unsubscribe);
 </script>
 
 <style>

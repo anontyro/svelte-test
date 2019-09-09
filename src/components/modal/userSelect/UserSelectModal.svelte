@@ -1,5 +1,6 @@
 <script>
   import { Store } from "../../../store/chatStore.js";
+  import { onMount } from "svelte";
   import { ACTIVE_COMPONENT } from "../../../store/storeEnums.js";
 
   let userName = "";
@@ -7,6 +8,12 @@
   let showModal = true;
   const storeSubscription = Store.subscribe(store => {
     userName = store.user.userName;
+  });
+
+  onMount(() => {
+    if (userName) {
+      showModal = false;
+    }
   });
 
   const onSubmit = event => {
