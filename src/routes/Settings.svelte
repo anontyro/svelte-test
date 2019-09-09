@@ -2,8 +2,9 @@
   import { onMount, onDestroy } from "svelte";
   import { Link } from "svero";
   import { Store } from "../store/chatStore";
+  import ChatItem from "../components/chat/ChatItem";
 
-  let userName = "user";
+  let userName = "";
   let chatMessages = [];
 
   const unsubscribe = Store.subscribe(store => {
